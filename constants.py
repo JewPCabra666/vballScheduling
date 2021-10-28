@@ -1,6 +1,4 @@
-from dataclasses import dataclass
-
-from dataclasses_json import dataclass_json
+from collections import namedtuple
 
 season_map = {
     "Coed Wed A": 420,
@@ -31,30 +29,14 @@ season_id = str(166)
 folder_path = f"seasons/{season_id}"
 base_url = 'https://rvc.net/adult-volleyball-programs/adult-indoor-leagues/schedules/?division_id={}&season_id=' + season_id
 teams_url = 'https://rvc.net/adult-volleyball-programs/adult-indoor-leagues/standings/'
+year = 2021
 
+TimeInfo = namedtuple('TimeInfo', 'week day date')
 
-@dataclass_json
-@dataclass
-class TimeInfo:
-    week: str
-    day: str
-    date: str
+GameInfo = namedtuple('GameInfo', 'time team1 team2 court')
 
+WeekInfo = namedtuple('WeekInfo', 'time_info games')
 
-@dataclass_json
-@dataclass
-class GameInfo:
-    time: str
-    team1: str
-    team2: str
-    court: str
+StartEnd = namedtuple('StartEnd', 'start end')
 
-    def has_team(self, team) -> bool:
-        return self.team1 == team or self.team2 == team
-
-
-@dataclass_json
-@dataclass
-class WeekInfo:
-    time_info: TimeInfo
-    games: list[GameInfo]
+ZippedPayload = namedtuple('ZippedPayload', 'season team attendees')
